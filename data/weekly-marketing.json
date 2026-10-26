@@ -8,7 +8,13 @@
   "2026-10-19": {
     "intro": "Six records, and the centre of gravity has moved from what AI can do to who pays for it and what it is allowed to touch. OpenAI widened ChatGPT advertising to 89 markets while keeping paid tiers ad-free, Google quietly began testing ads inside AI Mode, ending its ad-free introduction, and Microsoft split Copilot into a flat licence plus metered credits. Stagwell pulled four separately launched products under one masterbrand behind a multimillion-dollar campaign. The two consumer campaigns both hid the technology: OpenAI cast three grandpas doing errands in its first UK work, and Dollar Shave Club kept AI in the production pipeline with real people on camera after earlier AI-generated spots drew complaints.",
     "intro_ru": "Шесть записей, и центр тяжести сместился с того, что AI умеет, к тому, кто за него платит и к чему его допускают. OpenAI расширила рекламу в ChatGPT до 89 рынков, оставив платные тарифы без рекламы; Google без шума начал тестировать рекламу в AI Mode, завершив период без неё; Microsoft разделила Copilot на фиксированную лицензию и кредиты по потреблению. Stagwell собрала четыре выпущенных по отдельности продукта под один мастербренд с многомиллионной кампанией. Обе потребительские кампании технологию прятали: OpenAI сняла трёх пожилых героев за бытовыми делами, а Dollar Shave Club оставил AI в производстве и живых людей в кадре после критики за прежние сгенерированные ролики.",
-    "records": 6,
+    "records": 7,
     "written_at": "2026-10-26T17:10:00+00:00"
+  },
+  "2026-10-12": {
+    "intro": "Three records, and two of them are agencies and vendors repositioning around a surface that has no results page. New Engen began selling audits of which publishers shape the AI answers about a brand, turning the affiliate model toward a new gatekeeper, while Meltwater cast Kim Cattrall in an in-house film series selling the fear of not knowing how a brand appears inside those answers. Both are betting that visibility inside an answer is the thing clients will pay to measure next, which is a claim about where attention ends rather than where it begins.",
+    "intro_ru": "Три записи, и две из них — о том, как агентства и вендоры перестраиваются вокруг площадки, у которой нет страницы результатов. New Engen начала продавать аудиты изданий, формирующих ответы AI о бренде, развернув партнёрскую модель к новому привратнику, а Meltwater сняла с Ким Кэтролл серию собственных роликов, продающих страх не знать, как бренд выглядит внутри этих ответов. Обе ставят на то, что видимость внутри ответа станет следующим предметом измерения, за который клиенты готовы платить, — и это утверждение о том, где внимание заканчивается, а не начинается.",
+    "records": 3,
+    "written_at": "2026-10-26T19:10:00+00:00"
   }
 }

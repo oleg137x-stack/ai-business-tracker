@@ -32,6 +32,7 @@
       digestTitle: "Top AI News in Global Business This Week",
       digestTitleRu: "Главные AI-новости в мировом бизнесе за неделю",
       groupBy: "sector",
+      tagFields: ["industry", "ai_type", "status"],
       /* facets render as chip rows, in order */
       facets: [
         { key: "sector", label: "SECTOR", field: "sector", children: "industry" },
@@ -52,6 +53,7 @@
       digestTitle: "Top AI Marketing Moves This Week",
       digestTitleRu: "Главное в маркетинге AI за неделю",
       groupBy: "activity_type",
+      tagFields: ["activity_type", "channel", "audience"],
       facets: [
         { key: "activity_type", label: "ACTIVITY", field: "activity_type" },
         { key: "channel", label: "CHANNEL", field: "channel" },
@@ -66,6 +68,105 @@
       csv: ["event_date", "company", "activity_type", "channel", "audience", "promoter_type", "subject", "title", "description", "angle", "craft_note", "outcome", "metric", "spend", "agency", "source_name", "source_url", "asset_url"]
     }
   };
+
+  /* Hashtags for the share preview: one per facet, in both languages.
+     A value missing from here simply produces no tag rather than a bad one. */
+  var TAGS = {
+    /* industries */
+    "Banks": ["banks", "банки"],
+    "Payments": ["payments", "платежи"],
+    "Fintech": ["fintech", "финтех"],
+    "Insurance": ["insurance", "страхование"],
+    "Asset & Wealth Management": ["assetManagement", "управлениеАктивами"],
+    "Exchanges & Market Infrastructure": ["marketInfrastructure", "биржи"],
+    "Retail & E-commerce": ["retail", "ритейл"],
+    "Consumer Products": ["consumerProducts", "потребительскиеТовары"],
+    "Food & Beverage": ["foodAndBeverage", "продуктыПитания"],
+    "Restaurants": ["restaurants", "рестораны"],
+    "Apparel & Luxury": ["apparel", "одежда"],
+    "Pharma & Biotech": ["pharma", "фарма"],
+    "Healthcare Providers": ["healthcare", "здравоохранение"],
+    "Health Insurers": ["healthInsurance", "медстрахование"],
+    "Medical Devices": ["medtech", "медтехника"],
+    "Big Tech & Cloud": ["bigTech", "бигтех"],
+    "Software & SaaS": ["software", "софт"],
+    "Semiconductors & Hardware": ["semiconductors", "полупроводники"],
+    "IT Services & Consulting": ["itServices", "ИТуслуги"],
+    "Telecom": ["telecom", "телеком"],
+    "Media & Entertainment": ["media", "медиа"],
+    "Advertising & Marketing": ["advertising", "реклама"],
+    "Gaming": ["gaming", "гейминг"],
+    "Oil & Gas": ["oilAndGas", "нефтьИГаз"],
+    "Utilities & Power": ["utilities", "энергетика"],
+    "Renewables": ["renewables", "возобновляемаяЭнергия"],
+    "Metals & Mining": ["mining", "металлургия"],
+    "Chemicals": ["chemicals", "химия"],
+    "Industrial Manufacturing": ["manufacturing", "промышленность"],
+    "Aerospace & Defense": ["aerospace", "аэрокосмос"],
+    "Automotive": ["automotive", "автопром"],
+    "Construction & Engineering": ["construction", "строительство"],
+    "Airlines": ["airlines", "авиакомпании"],
+    "Logistics & Delivery": ["logistics", "логистика"],
+    "Rail & Shipping": ["railAndShipping", "железныеДорогиИМоре"],
+    "Professional Services": ["professionalServices", "профуслуги"],
+    "Real Estate": ["realEstate", "недвижимость"],
+    "Education": ["education", "образование"],
+    "Agriculture": ["agriculture", "агро"],
+    "Hospitality & Travel": ["travel", "туризм"],
+    /* AI types */
+    "Generative AI": ["generativeAI", "генеративныйИИ"],
+    "Agentic AI": ["agenticAI", "ИИагенты"],
+    "Predictive ML": ["predictiveML", "предиктивноеML"],
+    "NLP": ["NLP", "NLP"],
+    "Computer Vision": ["computerVision", "компьютерноеЗрение"],
+    "Conversational AI": ["conversationalAI", "разговорныйИИ"],
+    "Robotics": ["robotics", "робототехника"],
+    "Other": ["AI", "ИИ"],
+    /* statuses */
+    "Announced": ["announced", "анонсировано"],
+    "Pilot": ["pilot", "пилот"],
+    "Deployed": ["deployed", "внедрено"],
+    "Scaling": ["scaling", "масштабирование"],
+    "Investment": ["investment", "инвестиции"],
+    /* marketing: activity */
+    "Model launch": ["modelLaunch", "запускМодели"],
+    "Feature promo": ["featurePromo", "промоФункции"],
+    "Ad campaign": ["adCampaign", "рекламнаяКампания"],
+    "Brand film / video": ["brandFilm", "брендРолик"],
+    "Keynote / event": ["keynote", "кейноут"],
+    "Developer conference": ["devConference", "конференцияРазработчиков"],
+    "Sponsorship / partnership": ["sponsorship", "спонсорство"],
+    "PR & media relations": ["PR", "PR"],
+    "Brand & identity": ["branding", "брендинг"],
+    "Creator & influencer": ["creators", "креаторы"],
+    "Pricing & positioning": ["positioning", "позиционирование"],
+    "Earned-media moment": ["earnedMedia", "органическийОхват"],
+    /* marketing: channel */
+    "TV & streaming": ["tv", "ТВ"],
+    "Online video": ["onlineVideo", "онлайнВидео"],
+    "Social": ["social", "соцсети"],
+    "Out-of-home": ["outOfHome", "наружнаяРеклама"],
+    "Print": ["print", "пресса"],
+    "Owned newsroom / blog": ["ownedMedia", "собственныеКаналы"],
+    "Live event": ["liveEvent", "мероприятие"],
+    "Podcast": ["podcast", "подкаст"],
+    "Press briefing": ["pressBriefing", "прессбрифинг"],
+    "Developer channels": ["devChannels", "каналыРазработчиков"],
+    "Multi-channel": ["multiChannel", "мультиканал"],
+    /* marketing: audience */
+    "Consumer": ["consumer", "потребители"],
+    "Developer": ["developers", "разработчики"],
+    "Enterprise buyer": ["enterprise", "корпоративныеКлиенты"],
+    "Investor": ["investors", "инвесторы"],
+    "Policy & public": ["policy", "политикаИОбщество"]
+  };
+
+  function hashtags(r, ru) {
+    return (cfg().tagFields || []).map(function (f) {
+      var t = TAGS[r[f]];
+      return t ? "#" + t[ru ? 1 : 0] : "";
+    }).filter(Boolean);
+  }
 
   var MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
   var MONTHS_RU = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
@@ -142,10 +243,14 @@
     return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   }
 
+  /* "Measured only" means something was actually reported. A record whose
+     outcome opens with "Not disclosed" is not measured, even when `metric`
+     holds a scale figure such as a device count or an approval window. */
   function hasMetric(r) {
-    var o = (r.metric || "").trim(), p = (r.outcome || "").trim().toLowerCase();
-    if (o) return true;
-    return !!p && p !== "not disclosed" && /\d/.test(p);
+    var outcome = (r.outcome || "").trim().toLowerCase();
+    if (!outcome || outcome.indexOf("not disclosed") === 0) return false;
+    if ((r.metric || "").trim()) return true;
+    return /\d/.test(outcome);
   }
 
   /* ---------- hash routing ---------- */
@@ -436,6 +541,8 @@
     var oc = (ru && r.outcome_ru) ? r.outcome_ru : r.outcome;
     if (oc) out.push((ru ? "Результат: " : "Outcome: ") + oc);
     out.push(r.asset_url || r.source_url);
+    var tags = hashtags(r, ru);
+    if (tags.length) out.push(tags.join(" "));
     return out.join("\n\n");
   }
 
@@ -527,6 +634,8 @@
     var oc = (ru && r.outcome_ru) ? r.outcome_ru : r.outcome;
     if (oc) h += "<p>" + esc(ru ? "Результат: " : "Outcome: ") + esc(oc) + "</p>";
     h += '<div class="post-url">' + esc(r.asset_url || r.source_url) + "</div>";
+    var tagList = hashtags(r, ru);
+    if (tagList.length) h += '<div class="post-tags">' + esc(tagList.join(" ")) + "</div>";
     if (missingRu) h += '<div class="pending">TRANSLATION PENDING · SHOWING ENGLISH</div>';
     h += "</div>";
 

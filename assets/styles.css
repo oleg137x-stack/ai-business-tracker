@@ -481,3 +481,12 @@ html[data-theme="light"] .modal-backdrop { background: rgba(0, 0, 0, .45); }
 
   .modal-backdrop { padding: 12px; }
 }
+
+.post-tags {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--dim);
+  margin-top: 10px;
+  word-break: break-word;
+}
