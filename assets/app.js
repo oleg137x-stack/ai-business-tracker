@@ -578,7 +578,8 @@
     h += post.rows.map(function (r) {
       var line = (ru ? r.digest_line_ru : r.digest_line) || r.digest_line || r.title;
       return '<li style="margin-bottom:10px">' + esc(line) +
-        '<div class="post-url">' + esc(r.source_url) + "</div></li>";
+        ' <a href="' + esc(r.source_url) + '" target="_blank" rel="noopener">' +
+        esc(r.source_name || (ru ? "Источник" : "Source")) + " ↗</a></li>";
     }).join("");
     h += "</ul>";
     if (!post.count) h += '<p>' + (ru ? "На этой неделе записей нет." : "No entries in this week.") + "</p>";
@@ -633,7 +634,19 @@
     });
     var oc = (ru && r.outcome_ru) ? r.outcome_ru : r.outcome;
     if (oc) h += "<p>" + esc(ru ? "Результат: " : "Outcome: ") + esc(oc) + "</p>";
-    h += '<div class="post-url">' + esc(r.asset_url || r.source_url) + "</div>";
+    /* Show the source the way the feed does — its name as a link — rather
+       than a raw URL. The copied text still carries the bare URL, which is
+       what a post needs. */
+    h += '<div class="post-links">';
+    if (r.source_url) {
+      h += '<a href="' + esc(r.source_url) + '" target="_blank" rel="noopener">' +
+           esc(r.source_name || "Source") + " ↗</a>";
+    }
+    if (r.asset_url) {
+      h += '<a href="' + esc(r.asset_url) + '" target="_blank" rel="noopener">' +
+           (ru ? "Смотреть" : "Watch") + " ↗</a>";
+    }
+    h += "</div>";
     var tagList = hashtags(r, ru);
     if (tagList.length) h += '<div class="post-tags">' + esc(tagList.join(" ")) + "</div>";
     if (missingRu) h += '<div class="pending">TRANSLATION PENDING · SHOWING ENGLISH</div>';
