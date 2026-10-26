@@ -1,1 +1,8 @@
-{}
+{
+  "2026-10-19": {
+    "intro": "All three of this week's records are about opening an existing system to agents rather than building a new one: Walmart exposed its catalogue to third-party shopping agents, Zillow put its listings and affordability tools inside Claude, and Oracle extended its agent builder from Fusion out to industry-specific processes. Two of the three are distribution deals in which the company hands its inventory to someone else's assistant, which is a different bet from deploying an assistant of your own. None of the three disclosed a single performance figure, so what they establish is intent and plumbing, not results.",
+    "intro_ru": "Все три записи недели посвящены не созданию новых систем, а открытию существующих для агентов: Walmart открыл каталог сторонним покупательским агентам, Zillow встроил объявления и расчёт доступности в Claude, а Oracle расширил свой конструктор агентов с Fusion на отраслевые процессы. Два случая из трёх — это дистрибуция, когда компания отдаёт свой ассортимент чужому ассистенту, а это иная ставка, чем внедрение собственного. Ни один из трёх не раскрыл ни одного показателя эффективности, так что речь пока о намерении и инфраструктуре, а не о результатах.",
+    "records": 3,
+    "written_at": "2026-10-26T13:10:00+00:00"
+  }
+}
