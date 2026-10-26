@@ -479,7 +479,11 @@ def run_tracker(tracker: str, since: str, today: str, dry_run: bool,
     if not isinstance(existing, list):
         existing = []
     seen_ids = {r.get("id") for r in existing}
-    seen_urls = {str(r.get("source_url", "")).rstrip("/") for r in existing}
+    # Keyed on company too: a weekly roundup article legitimately carries
+    # several companies' records, and deduping on the URL alone drops all
+    # but the first of them.
+    seen_urls = {(r.get("company", ""), str(r.get("source_url", "")).rstrip("/"))
+                 for r in existing}
 
     added = []
     if not skip_search:
