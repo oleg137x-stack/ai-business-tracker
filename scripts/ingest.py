@@ -556,8 +556,14 @@ def main() -> None:
     since = args.since or max(TRACKER_START, (today - dt.timedelta(days=3)).isoformat())
 
     if not os.getenv("ANTHROPIC_API_KEY"):
-        # Exit 0 so a missing secret does not fail the workflow every morning.
-        print("ANTHROPIC_API_KEY not set — skipping ingestion (no changes made).")
+        # On the nightly cron, exit 0: a missing secret should not send a failure
+        # email every morning. On a run someone triggered by hand, fail loudly —
+        # silently doing nothing is the worst possible answer to "go and fetch".
+        msg = ("ANTHROPIC_API_KEY is not set. Add it as an Actions secret: "
+               "Settings -> Secrets and variables -> Actions -> New repository secret.")
+        if os.getenv("GITHUB_EVENT_NAME") == "workflow_dispatch":
+            sys.exit(msg)
+        print(msg + " Skipping ingestion (no changes made).")
         return
 
     trackers = [args.tracker] if args.tracker else sorted(TRACKER_CONFIG)
