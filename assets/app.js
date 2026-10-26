@@ -84,7 +84,8 @@
     outcome: "all",
     sel: {},          /* facet key -> value, "ALL" means unset */
     week: null,       /* ISO monday, null = latest */
-    open: null        /* record id for the share modal */
+    open: null,       /* record id for the share modal */
+    openDigest: false /* share modal showing the whole week's digest */
   };
 
   var cache = {};     /* tracker -> { rows: [], weekly: {} } */
@@ -441,9 +442,67 @@
     return out.join("\n\n");
   }
 
+  /* The digest preview is the whole week as one postable block: heading,
+     intro and bullets, in whichever language the modal is set to. */
+  function digestPost(ru) {
+    var c = cfg(), w = weekly()[state.week] || {};
+    var from = state.week, to = weekEnd(state.week);
+    var list = filtered().filter(function (r) { return r.event_date >= from && r.event_date <= to; })
+      .sort(function (a, b) { return String(b.event_date).localeCompare(String(a.event_date)); });
+    var out = [(ru ? c.digestTitleRu : c.digestTitle) + " (" + weekRange(state.week, ru) + ")"];
+    var intro = ru ? (w.intro_ru || w.intro) : w.intro;
+    if (intro && !anyFilter()) out.push(intro);
+    list.forEach(function (r) {
+      var line = (ru ? r.digest_line_ru : r.digest_line) || r.digest_line || r.title;
+      out.push("— " + line + " " + r.source_url);
+    });
+    return { text: out.join("\n\n"), count: list.length, head: out[0],
+             intro: (intro && !anyFilter()) ? intro : "", rows: list };
+  }
+
+  function renderDigestModal() {
+    var ru = state.mlang === "ru", post = digestPost(ru);
+    var h = '<div class="modal-backdrop"><div class="modal" role="dialog" aria-modal="true" aria-label="Share preview of this week\'s digest">';
+    h += '<div class="modal-head"><span class="modal-title">SHARE PREVIEW · WEEKLY DIGEST</span><span class="chips">';
+    h += '<span class="group"><button type="button" class="chip" data-mlang="en" aria-pressed="' + (!ru) + '">EN</button>' +
+         '<button type="button" class="chip" data-mlang="ru" aria-pressed="' + ru + '">RU</button></span>';
+    h += '<button type="button" class="chip" id="modal-close" aria-label="Close">✕</button></span></div>';
+
+    h += '<div class="post"><h3>' + esc(post.head) + "</h3>";
+    if (post.intro) h += "<p>" + esc(post.intro) + "</p>";
+    h += '<ul style="padding-left:20px;margin:12px 0 0">';
+    h += post.rows.map(function (r) {
+      var line = (ru ? r.digest_line_ru : r.digest_line) || r.digest_line || r.title;
+      return '<li style="margin-bottom:10px">' + esc(line) +
+        '<div class="post-url">' + esc(r.source_url) + "</div></li>";
+    }).join("");
+    h += "</ul>";
+    if (!post.count) h += '<p>' + (ru ? "На этой неделе записей нет." : "No entries in this week.") + "</p>";
+    h += "</div>";
+
+    h += '<div class="chips" style="margin-top:18px">' +
+      '<button type="button" class="chip" id="modal-copy-text">COPY TEXT</button>' +
+      '<button type="button" class="chip" id="modal-copy-link">COPY LINK</button></div>';
+    h += "</div></div>";
+
+    document.body.insertAdjacentHTML("beforeend", h);
+    var mt = document.querySelector(".modal-backdrop");
+    mt.dataset.text = post.text;
+    mt.dataset.link = location.origin + location.pathname +
+      "#t=" + state.tracker + "&v=digest&w=" + state.week;
+    $("modal-close").focus();
+  }
+
+  function closeModal() {
+    state.open = null;
+    state.openDigest = false;
+    renderModal();
+  }
+
   function renderModal() {
     var old = document.querySelector(".modal-backdrop");
     if (old) old.remove();
+    if (state.openDigest) { renderDigestModal(); return; }
     if (!state.open) return;
 
     var r = rows().filter(function (x) { return x.id === state.open; })[0];
@@ -572,6 +631,7 @@
     state.q = "";
     state.week = null;
     state.open = null;
+    state.openDigest = false;
     $("q").value = "";
     load(t).then(renderAll);
   }
@@ -596,13 +656,13 @@
     var b = ev.target.closest("button");
 
     if (ev.target.closest(".modal-backdrop") && !ev.target.closest(".modal")) {
-      state.open = null; renderModal(); return;
+      closeModal(); return;
     }
     if (!b) return;
 
     if (b.dataset.tracker) { switchTracker(b.dataset.tracker); return; }
     if (b.dataset.themeSet) { applyTheme(b.dataset.themeSet); return; }
-    if (b.dataset.view) { state.view = b.dataset.view; renderAll(); return; }
+    if (b.dataset.view) { state.view = b.dataset.view; state.openDigest = false; state.open = null; renderAll(); return; }
     if (b.dataset.facet) {
       var k = b.dataset.facet;
       state.sel[k] = b.dataset.value;
@@ -611,7 +671,7 @@
       renderAll(); return;
     }
     if (b.dataset.outcome) { state.outcome = b.dataset.outcome; renderAll(); return; }
-    if (b.dataset.share) { state.open = b.dataset.share; renderModal(); return; }
+    if (b.dataset.share) { state.open = b.dataset.share; state.openDigest = false; renderModal(); return; }
     if (b.dataset.mlang) {
       state.mlang = b.dataset.mlang;
       try { localStorage.setItem("tracker-lang", state.mlang); } catch (e) { /* private mode */ }
@@ -642,14 +702,15 @@
       }
       case "copy-text": copy(b, digestText(false)); break;
       case "copy-md": copy(b, digestText(true)); break;
-      case "modal-close": state.open = null; renderModal(); break;
+      case "share-digest": state.openDigest = true; state.open = null; renderModal(); break;
+      case "modal-close": closeModal(); break;
       case "modal-copy-text": copy(b, document.querySelector(".modal-backdrop").dataset.text); break;
       case "modal-copy-link": copy(b, document.querySelector(".modal-backdrop").dataset.link); break;
     }
   });
 
   document.addEventListener("keydown", function (ev) {
-    if (ev.key === "Escape" && state.open) { state.open = null; renderModal(); }
+    if (ev.key === "Escape" && (state.open || state.openDigest)) closeModal();
   });
 
   window.addEventListener("hashchange", function () {
