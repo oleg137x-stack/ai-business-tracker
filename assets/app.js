@@ -297,9 +297,7 @@
     h += '<h2 class="entry-co">' + esc(String(r.company).toUpperCase()) +
          ' &nbsp;<span class="entry-facets">' + esc(facetLine(r)) + "</span></h2>";
 
-    var body = esc(r.title);
-    if (r.description) body += ". " + esc(r.description);
-    h += '<div class="entry-body">' + body + "</div>";
+    h += '<div class="entry-body">' + esc(r.description || r.title) + "</div>";
 
     c.fields.forEach(function (f) {
       if (!r[f.field]) return;
@@ -429,9 +427,8 @@
 
   function postText(r, ru) {
     var c = cfg(), out = [];
-    out.push((ru && r.title_ru) ? r.title_ru : r.title);
     var d = (ru && r.description_ru) ? r.description_ru : r.description;
-    if (d) out.push(d);
+    out.push(d || ((ru && r.title_ru) ? r.title_ru : r.title));
     c.fields.forEach(function (f) {
       var v = (ru && f.ru && r[f.ru]) ? r[f.ru] : r[f.field];
       if (v && f.label === "ANGLE") out.push(v);
@@ -520,9 +517,8 @@
     h += '<div class="post">';
     h += '<div class="post-meta">' + esc(String(r.company).toUpperCase()) + " · " +
          esc(fmtDate(r.event_date)) + " " + esc(fmtYear(r.event_date)) + "</div>";
-    h += "<h3>" + esc((ru && r.title_ru) ? r.title_ru : r.title) + "</h3>";
     var d = (ru && r.description_ru) ? r.description_ru : r.description;
-    if (d) h += "<p>" + esc(d) + "</p>";
+    h += "<p>" + esc(d || ((ru && r.title_ru) ? r.title_ru : r.title)) + "</p>";
     c.fields.forEach(function (f) {
       if (f.label !== "ANGLE") return;
       var v = (ru && f.ru && r[f.ru]) ? r[f.ru] : r[f.field];

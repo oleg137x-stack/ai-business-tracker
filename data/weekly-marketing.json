@@ -1,1 +1,14 @@
-{}
+{
+  "2026-10-05": {
+    "intro": "Three records, and all three argue the same way: show the product doing something ordinary rather than claim it is extraordinary. OpenAI launched an ad format in ChatGPT by leading on measurement and brand suitability rather than reach, Google built its enterprise event entirely out of named customer deployments instead of benchmarks, and Oura went in the opposite direction by building its film on a handmade miniature set and making the absence of AI part of the pitch. That last one is the signal worth watching: AI in creative production has become distinctive enough to position against.",
+    "intro_ru": "Три записи, и все три строят аргумент одинаково: показать продукт за обычным делом, а не заявлять о его исключительности. OpenAI запустила рекламный формат в ChatGPT, сделав акцент на измерении и уместности бренда, а не на охвате; Google собрала корпоративное мероприятие целиком из названных клиентских внедрений вместо бенчмарков; Oura же пошла в обратную сторону, сняв ролик на рукотворной миниатюрной декорации и сделав отсутствие AI частью сообщения. Последнее и есть главный сигнал: AI в креативном производстве стал достаточно заметен, чтобы против него можно было позиционироваться.",
+    "records": 3,
+    "written_at": "2026-10-26T17:10:00+00:00"
+  },
+  "2026-10-19": {
+    "intro": "Five records, and the centre of gravity has moved from what AI can do to who pays for it and what it is allowed to touch. OpenAI widened ChatGPT advertising to 89 markets while keeping paid tiers ad-free, Microsoft split Copilot into a flat licence plus metered credits, and Stagwell pulled four separately launched products under one masterbrand with a multimillion-dollar campaign behind it. The two consumer-facing campaigns both hid the technology: OpenAI cast three grandpas doing errands in its first UK work, and Dollar Shave Club kept AI in the production pipeline with real people on camera after earlier AI-generated spots drew complaints.",
+    "intro_ru": "Пять записей, и центр тяжести сместился с того, что AI умеет, к тому, кто за него платит и к чему его допускают. OpenAI расширила рекламу в ChatGPT до 89 рынков, оставив платные тарифы без рекламы; Microsoft разделила Copilot на фиксированную лицензию и оплачиваемые по потреблению кредиты; Stagwell собрала четыре выпущенных по отдельности продукта под один мастербренд с многомиллионной кампанией. Обе потребительские кампании технологию прятали: OpenAI сняла трёх пожилых героев за бытовыми делами в своей первой британской работе, а Dollar Shave Club оставил AI в производстве и живых людей в кадре после критики за прежние сгенерированные ролики.",
+    "records": 5,
+    "written_at": "2026-10-26T17:10:00+00:00"
+  }
+}
