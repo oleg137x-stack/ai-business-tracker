@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AI Marketing Tracker record",
+  "description": "One record = one marketing, communications or launch move around AI. The subject is how the work was made, staged and received, not what was deployed.",
+  "type": "object",
+  "required": ["id", "company", "activity_type", "title", "event_date", "source_url", "digest_line"],
+  "properties": {
+    "id": { "type": "string", "description": "Stable unique slug. Used for dedup." },
+    "company": { "type": "string", "description": "Whoever did the marketing, e.g. Anthropic, HSBC." },
+    "parent_group": { "type": "string" },
+    "promoter_type": { "type": "string", "enum": ["AI lab", "Big tech", "Enterprise brand", "Bank / financial", "Agency / studio", "Startup"] },
+    "activity_type": {
+      "type": "string",
+      "enum": ["Model launch", "Feature promo", "Ad campaign", "Brand film / video", "Keynote / event", "Developer conference", "Sponsorship / partnership", "PR & media relations", "Brand & identity", "Creator & influencer", "Pricing & positioning", "Earned-media moment"]
+    },
+    "channel": {
+      "type": "string",
+      "enum": ["TV & streaming", "Online video", "Social", "Out-of-home", "Print", "Owned newsroom / blog", "Live event", "Podcast", "Press briefing", "Developer channels", "Multi-channel"]
+    },
+    "audience": { "type": "string", "enum": ["Consumer", "Developer", "Enterprise buyer", "Investor", "Policy & public"] },
+    "country": { "type": "string" },
+    "region": { "type": "string", "enum": ["North America", "Europe", "UK & Ireland", "Asia-Pacific", "MENA", "Latin America", "Global"] },
+    "subject": { "type": "string", "description": "What is being marketed: the model, product or programme name." },
+    "title": { "type": "string", "description": "Short headline, <= 110 chars." },
+    "description": { "type": "string", "description": "1-3 sentence summary of what was done." },
+    "angle": { "type": "string", "description": "The positioning in one line: the claim, the message, the register." },
+    "craft_note": { "type": "string", "description": "What is notable in the execution: casting, music, direction, staging, copy, media buy." },
+    "asset_url": { "type": "string", "description": "Direct link to the ad, film, keynote recording or landing page, when distinct from the source article. Empty otherwise." },
+    "spend": { "type": "string", "description": "Reported spend or media weight as text. Empty if not reported." },
+    "agency": { "type": "string", "description": "Creative agency or studio, if named." },
+    "outcome": { "type": "string", "description": "Measured reception: views, earned coverage, sign-ups, sentiment, award, backlash. Not disclosed where nothing was reported." },
+    "metric": { "type": "string", "description": "Short scannable metric, empty if none." },
+    "digest_line": { "type": "string", "description": "One standalone sentence under ~160 chars for the weekly digest." },
+    "title_ru": { "type": "string" },
+    "description_ru": { "type": "string" },
+    "angle_ru": { "type": "string" },
+    "outcome_ru": { "type": "string" },
+    "digest_line_ru": { "type": "string" },
+    "event_date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "Not earlier than 2026-10-01." },
+    "source_name": { "type": "string" },
+    "source_url": { "type": "string", "format": "uri" },
+    "source_tier": { "type": "string", "enum": ["primary", "news", "secondary"] },
+    "source_channel": { "type": "string", "description": "For example trade press, newsroom, keynote." },
+    "confidence": { "type": "string", "enum": ["high", "med", "low"] },
+    "added_at": { "type": "string" }
+  }
+}

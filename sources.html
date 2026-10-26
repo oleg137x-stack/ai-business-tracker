@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data sources and methodology — AI Business Tracker</title>
+  <meta name="description" content="How the AI Business Tracker and AI Marketing Tracker are built: what counts as a record, which companies are watched, source tiers, outcomes, translations and weekly summaries." />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .doc { font-family: var(--font-sans); font-size: 16px; line-height: 1.7; max-width: 46rem; }
+    .doc h2 { font-family: var(--font-mono); font-size: 15px; letter-spacing: 2px; text-transform: uppercase;
+              border-bottom: 1px dashed var(--rule); padding-bottom: 8px; margin: 36px 0 14px; font-weight: 400; }
+    .doc h3 { font-family: var(--font-mono); font-size: 13px; letter-spacing: 1px; text-transform: uppercase;
+              color: var(--dim); margin: 22px 0 6px; font-weight: 400; }
+    .doc p { margin: 0 0 12px; }
+    .doc ul { margin: 0 0 12px; padding-left: 22px; }
+    .doc li { margin-bottom: 8px; }
+    .doc dt { font-family: var(--font-mono); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; margin-top: 12px; }
+    .doc dd { margin: 2px 0 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <nav class="trackers" aria-label="Back to the trackers">
+      <button type="button" onclick="location.href='index.html#t=business'">AI BUSINESS TRACKER</button>
+      <button type="button" onclick="location.href='index.html#t=marketing'">AI MARKETING TRACKER</button>
+    </nav>
+
+    <header class="masthead">
+      <span class="strap">Data sources and methodology</span>
+      <div class="toggles">
+        <div class="group" role="group" aria-label="Theme">
+          <button type="button" class="chip" id="th-dark" aria-pressed="true">DARK</button>
+          <button type="button" class="chip" id="th-light" aria-pressed="false">LIGHT</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="doc">
+
+      <h2>What this is</h2>
+      <p>Two trackers sharing one site. Both are curated feeds of dated, sourced records about artificial intelligence in large organisations, running from 1 October 2026 onwards and refreshed every day. Neither is a league table, a ranking or an analyst report: there are no aggregate statistics here on purpose, because a count of announcements measures press-release output rather than adoption.</p>
+
+      <h3>AI Business Tracker</h3>
+      <p>What companies actually did with AI and what it produced: deployments, pilots, scaled rollouts, programme investments, partnerships, product launches, and the occasional leadership or organisational move that signals an AI strategy. One record is one announced event at one company.</p>
+
+      <h3>AI Marketing Tracker</h3>
+      <p>How AI is introduced, positioned and sold: how a model launch was staged, how a feature was promoted, the ad campaigns and brand films, keynotes and developer conferences, press and media relations, brand and identity work, creator plays, pricing and positioning moves, and the earned-media moments that followed. The subject is the craft of the announcement, not the technology behind it. Most records come from the AI labs and the big technology platforms, since they produce most of the interesting work — but any company publicising its own AI belongs here, including a bank launching its own model.</p>
+
+      <h2>Which companies are watched</h2>
+      <p>The business tracker's company universe is drawn from the <strong>Fortune 500</strong>, extended two ways: non-US companies of comparable scale, because a tracker of global business cannot be a US-only list; and the major global technology vendors whose AI-for-business announcements shape what everyone else deploys — Google, Amazon, Microsoft, Anthropic, OpenAI, xAI, Meta, Nvidia, Salesforce, IBM, Oracle, SAP and their peers. Where such a vendor announces a named customer deployment, the record is created for the <em>customer</em>, with the vendor recorded in the vendor field.</p>
+      <p>The marketing tracker has no fixed universe. Anyone marketing AI can appear, including agencies and studios credited for the work.</p>
+
+      <h2>How records are found</h2>
+      <p>A scheduled job runs once a day and searches for announcements published since its previous run. The two trackers get deliberately different briefs.</p>
+      <ul>
+        <li><strong>Business</strong> — company newsrooms and investor releases, vendor press releases that name a client, and the business and trade press: Reuters, Bloomberg, CNBC, the FT, plus the sector trade titles.</li>
+        <li><strong>Marketing</strong> — the advertising and marketing trade press (Adweek, Campaign, Ad Age, The Drum, Marketing Brew and equivalents), launch events and keynote recordings, brand newsrooms and owned blogs, creative award shows, and the coverage that follows a launch.</li>
+      </ul>
+      <p>Candidates are then extracted into the published schemas (<a href="data/schema-business.json">business</a>, <a href="data/schema-marketing.json">marketing</a>), de-duplicated against everything already stored by both record identity and source URL, and appended. Anything dated before 1 October 2026 is dropped.</p>
+
+      <h2>Source tiers</h2>
+      <p>Every record carries the tier of the source it came from, so you can judge it without leaving the page.</p>
+      <dl>
+        <dt>Primary</dt>
+        <dd>The company's own newsroom, an investor release, a vendor press release, or a keynote recording. What the organisation itself said.</dd>
+        <dt>News</dt>
+        <dd>A reputable outlet reporting the event — a wire service, a national title, or an established trade publication.</dd>
+        <dt>Secondary</dt>
+        <dd>An aggregator, a newsletter or a blog. Recorded when it is the only source available, and flagged as lower confidence.</dd>
+      </dl>
+      <p>Confidence is recorded separately: <strong>high</strong> for a primary source or news reporting carrying a named figure, <strong>med</strong> for news without a hard number, <strong>low</strong> where only a secondary source exists.</p>
+
+      <h2>Measured outcomes</h2>
+      <p>The outcome field records what was actually reported, and nothing more. Where a company published a figure, the figure is quoted with the unit and the scope it was given. Where a company published nothing, the outcome reads <strong>Not disclosed</strong> — it is not replaced with an estimate, a vendor projection or an industry benchmark.</p>
+      <p>This matters for reading the feed. A great many AI announcements carry no measurement at all, and the <strong>Measured only</strong> filter exists to isolate the ones that do. A reported figure is also a company's own claim, usually unaudited and usually from the party with an interest in it; the source link is there so you can see how it was framed.</p>
+      <p>On the marketing side, outcomes are reception rather than operations: views, earned coverage, sign-ups, sentiment, awards, and backlash where it happened.</p>
+
+      <h2>Weekly digests</h2>
+      <p>Each tracker has a weekly digest view: a bulleted list of that week's records, each a single sentence written to stand alone, with a link to the source. Above the bullets sits a short written summary of the week — which areas the records clustered in, and what the notable moves point to.</p>
+      <p>That summary is generated by the same daily job rather than assembled in the browser. It is rewritten each day as the current week fills up, and left alone once the week has closed. Because it describes a whole week, it is hidden whenever you have filters narrowing the list, rather than being shown above a list it no longer describes.</p>
+
+      <h2>Russian translations</h2>
+      <p>The share preview and the weekly digest both offer a Russian version. Translations are produced by the daily job and stored alongside the English fields, which is why they appear instantly and work offline — nothing is translated in your browser and no API key is shipped to the page. A record added before its translation pass shows the English text with a <strong>Translation pending</strong> note rather than a machine-mangled sentence.</p>
+
+      <h2>AI-assisted curation — and its limits</h2>
+      <p>Finding, summarising, classifying and translating these records is done with AI assistance. That is a deliberate trade: it is what makes daily coverage of this many companies possible at all, and it means the usual failure modes apply. A summary can compress away an important qualifier. A classification can land in the wrong industry or business area. A date can be the article's date rather than the event's. A company's claim can be repeated more confidently than it deserves.</p>
+      <p><strong>Treat every entry as a pointer to its source, not as a substitute for it.</strong> Before quoting a figure anywhere that matters, open the link and read how it was stated.</p>
+
+      <h2>Data and reuse</h2>
+      <p>The underlying data is plain JSON in the repository and the feed exports to CSV from the filter bar, so you can take whatever is on screen elsewhere.</p>
+      <ul>
+        <li><a href="data/business.json">data/business.json</a> — business records</li>
+        <li><a href="data/marketing.json">data/marketing.json</a> — marketing records</li>
+        <li><a href="data/weekly-business.json">data/weekly-business.json</a>, <a href="data/weekly-marketing.json">data/weekly-marketing.json</a> — weekly summaries</li>
+        <li><a href="data/ingest-status.json">data/ingest-status.json</a> — when the job last ran and what it did</li>
+      </ul>
+
+      <h2>Corrections</h2>
+      <p>If a record is wrong — misattributed, misdated, misclassified, or quoting a figure the source does not support — open an issue on the repository with the record id and the correction.</p>
+
+    </div>
+
+    <footer class="foot">
+      <span>UPDATED DAILY &#183; DATA FROM 1 OCTOBER 2026 ONWARDS</span>
+      <span><a href="index.html">&#9666; BACK TO THE TRACKER</a></span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      function apply(t) {
+        root.setAttribute("data-theme", t);
+        document.getElementById("th-dark").setAttribute("aria-pressed", String(t === "dark"));
+        document.getElementById("th-light").setAttribute("aria-pressed", String(t === "light"));
+        try { localStorage.setItem("tracker-theme", t); } catch (e) { /* private mode */ }
+      }
+      var saved = "dark";
+      try { saved = localStorage.getItem("tracker-theme") || "dark"; } catch (e) { /* private mode */ }
+      apply(saved === "light" ? "light" : "dark");
+      document.getElementById("th-dark").onclick = function () { apply("dark"); };
+      document.getElementById("th-light").onclick = function () { apply("light"); };
+    })();
+  </script>
+</body>
+</html>

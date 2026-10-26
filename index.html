@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Business Tracker — AI use cases, investments and marketing in global business</title>
+  <meta name="description" content="A daily feed of AI use cases, programme investments and marketing moves across large global companies and the major technology vendors, with sources and measured outcomes." />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="wrap">
+
+    <nav class="trackers" aria-label="Choose tracker">
+      <button type="button" data-tracker="business" aria-pressed="true">AI BUSINESS TRACKER</button>
+      <button type="button" data-tracker="marketing" aria-pressed="false">AI MARKETING TRACKER</button>
+    </nav>
+
+    <header class="masthead">
+      <span class="strap" id="strap">What companies did with AI, and what it produced</span>
+      <div class="toggles">
+        <div class="group" role="group" aria-label="View">
+          <button type="button" class="chip" data-view="feed" aria-pressed="true">FEED</button>
+          <button type="button" class="chip" data-view="digest" aria-pressed="false">WEEKLY DIGEST</button>
+        </div>
+        <div class="group" role="group" aria-label="Theme">
+          <button type="button" class="chip" data-theme-set="dark" aria-pressed="true">DARK</button>
+          <button type="button" class="chip" data-theme-set="light" aria-pressed="false">LIGHT</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- FEED VIEW -->
+    <section id="view-feed">
+      <button type="button" class="chip filters-toggle" id="filters-toggle" aria-expanded="false" aria-controls="filters">FILTERS</button>
+
+      <div id="filters">
+        <div id="facets"></div>
+
+        <div class="frow">
+          <span class="flabel" id="lab-search">SEARCH</span>
+          <div class="chips">
+            <input type="search" id="q" placeholder="company, vendor, keyword" aria-labelledby="lab-search" />
+            <input type="date" id="d1" min="2026-10-01" aria-label="From date" />
+            <input type="date" id="d2" min="2026-10-01" aria-label="To date" />
+          </div>
+        </div>
+      </div>
+
+      <div class="statusbar">
+        <span id="count">LOADING…</span>
+        <span class="chips">
+          <select id="sort" aria-label="Sort order">
+            <option value="newest">NEWEST FIRST</option>
+            <option value="oldest">OLDEST FIRST</option>
+            <option value="company">COMPANY A&rarr;Z</option>
+          </select>
+          <button type="button" class="chip" id="reset">RESET</button>
+          <button type="button" class="chip" id="csv">CSV</button>
+        </span>
+      </div>
+
+      <div id="feed"></div>
+    </section>
+
+    <!-- DIGEST VIEW -->
+    <section id="view-digest" hidden>
+      <div class="frow">
+        <span class="flabel">WEEK</span>
+        <div class="chips">
+          <button type="button" class="chip" id="week-prev" aria-label="Previous week">&#9666;</button>
+          <span class="chip" id="week-label" aria-live="polite" style="cursor:default"></span>
+          <button type="button" class="chip" id="week-next" aria-label="Next week">&#9656;</button>
+        </div>
+        <div class="chips group" role="group" aria-label="Digest language">
+          <button type="button" class="chip" data-dlang="en" aria-pressed="true">EN</button>
+          <button type="button" class="chip" data-dlang="ru" aria-pressed="false">RU</button>
+        </div>
+      </div>
+
+      <div class="statusbar">
+        <span id="digest-count"></span>
+        <span class="chips">
+          <button type="button" class="chip" id="copy-text">COPY AS TEXT</button>
+          <button type="button" class="chip" id="copy-md">COPY AS MARKDOWN</button>
+        </span>
+      </div>
+
+      <h2 class="digest-head" id="digest-head"></h2>
+      <p class="digest-intro" id="digest-intro"></p>
+      <p class="digest-note" id="digest-note" hidden></p>
+      <ul class="digest-list" id="digest-list"></ul>
+    </section>
+
+    <footer class="foot">
+      <span>AI-ASSISTED CURATION &#183; CHECK THE SOURCE BEFORE RELYING ON A FIGURE</span>
+      <span><a href="sources.html">DATA SOURCES &amp; METHODOLOGY</a></span>
+    </footer>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
