@@ -1,9 +1,11 @@
 name: Daily AI tracker ingestion
 
+# The nightly cron is deliberately switched off: the API-key route bills per
+# call, and this tracker is updated by a scheduled Claude Code session instead.
+# Re-enable the schedule block below if you ever add ANTHROPIC_API_KEY.
 on:
-  schedule:
-    # 06:15 UTC every day. Cron is UTC.
-    - cron: "15 6 * * *"
+  # schedule:
+  #   - cron: "15 6 * * *"
   workflow_dispatch:
     inputs:
       since:
