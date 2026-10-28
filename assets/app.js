@@ -121,7 +121,7 @@
     "Computer Vision": ["computerVision", "компьютерноеЗрение"],
     "Conversational AI": ["conversationalAI", "разговорныйИИ"],
     "Robotics": ["robotics", "робототехника"],
-    "Other": ["AI", "ИИ"],
+    "Other": ["otherAI", "прочийИИ"],
     /* statuses */
     "Announced": ["announced", "анонсировано"],
     "Pilot": ["pilot", "пилот"],
@@ -161,11 +161,18 @@
     "Policy & public": ["policy", "политикаИОбщество"]
   };
 
+  /* Every post opens with #AI, then one tag per facet — four in all.
+     Duplicates are dropped rather than printed twice, so a facet that ever
+     maps onto the leading tag degrades to three instead of repeating it. */
   function hashtags(r, ru) {
-    return (cfg().tagFields || []).map(function (f) {
+    var out = [ru ? "#ИИ" : "#AI"];
+    (cfg().tagFields || []).forEach(function (f) {
       var t = TAGS[r[f]];
-      return t ? "#" + t[ru ? 1 : 0] : "";
-    }).filter(Boolean);
+      if (!t) return;
+      var tag = "#" + t[ru ? 1 : 0];
+      if (out.indexOf(tag) < 0) out.push(tag);
+    });
+    return out;
   }
 
   var MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
