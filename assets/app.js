@@ -41,7 +41,12 @@
         { key: "ai_type", label: "AI TYPE", field: "ai_type" }
       ],
       /* extra labelled lines above the outcome */
-      fields: [],
+      /* Optional on business records: a plain-language explainer for a
+         reader who does not follow the industry. Records without one
+         simply render as before. */
+      fields: [
+        { label: "WHY IT MATTERS", field: "explainer", ru: "explainer_ru", inPost: true }
+      ],
       searchFields: ["company", "title", "description", "vendor", "industry"],
       csv: ["event_date", "company", "sector", "industry", "status", "ai_type", "title", "description", "outcome", "metric", "investment_amount", "vendor", "source_name", "source_url"]
     },
@@ -61,7 +66,7 @@
         { key: "promoter_type", label: "PROMOTER", field: "promoter_type" }
       ],
       fields: [
-        { label: "ANGLE", field: "angle", ru: "angle_ru" },
+        { label: "ANGLE", field: "angle", ru: "angle_ru", inPost: true },
         { label: "CRAFT", field: "craft_note" }
       ],
       searchFields: ["company", "title", "description", "angle", "craft_note", "subject", "agency"],
@@ -543,7 +548,7 @@
     out.push(d || ((ru && r.title_ru) ? r.title_ru : r.title));
     c.fields.forEach(function (f) {
       var v = (ru && f.ru && r[f.ru]) ? r[f.ru] : r[f.field];
-      if (v && f.label === "ANGLE") out.push(v);
+      if (v && f.inPost) out.push(v);
     });
     var oc = (ru && r.outcome_ru) ? r.outcome_ru : r.outcome;
     if (oc) out.push((ru ? "Результат: " : "Outcome: ") + oc);
@@ -635,7 +640,7 @@
     var d = (ru && r.description_ru) ? r.description_ru : r.description;
     h += "<p>" + esc(d || ((ru && r.title_ru) ? r.title_ru : r.title)) + "</p>";
     c.fields.forEach(function (f) {
-      if (f.label !== "ANGLE") return;
+      if (!f.inPost) return;
       var v = (ru && f.ru && r[f.ru]) ? r[f.ru] : r[f.field];
       if (v) h += "<p>" + esc(v) + "</p>";
     });
